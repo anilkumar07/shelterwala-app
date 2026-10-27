@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shelterwala - Multi-Role App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: { DEFAULT: '#0A2B5C', dark: '#061a38', light: '#13438a' },
+                        cyan: { DEFAULT: '#00AEEF', dark: '#008bbf', light: '#33bef2' },
+                        yellow: { DEFAULT: '#F7D000', dark: '#c4a500', light: '#f9d933' }
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'], heading: ['Poppins', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans bg-gray-100 text-gray-800 min-h-screen flex flex-col">
+
+    <!-- TOP ROLE SWITCHER BAR FOR DEMO & APK -->
+    <header class="bg-navy text-white sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="w-9 h-9 bg-yellow text-navy font-bold rounded-xl flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-house-user"></i>
+                </div>
+                <span class="font-heading font-extrabold text-lg tracking-tight">SHELTER<span class="text-cyan">WALA</span> App</span>
+            </div>
+            <div class="flex space-x-2 mt-2 sm:mt-0">
+                <button onclick="switchRole('student')" id="btnStudent" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-cyan text-navy transition-all">Student Portal</button>
+                <button onclick="switchRole('admin')" id="btnAdmin" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-navy-light text-white border border-white/20 transition-all">Admin Dashboard</button>
+                <button onclick="switchRole('captain')" id="btnCaptain" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-navy-light text-white border border-white/20 transition-all">Captain Meal Scanner</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6">
+
+        <!-- 1. STUDENT PORTAL -->
+        <div id="roleStudent" class="space-y-6">
+            <div class="bg-navy text-white p-6 rounded-3xl shadow-lg relative overflow-hidden">
+                <div class="relative z-10">
+                    <span class="bg-cyan text-navy text-xs font-bold px-3 py-1 rounded-full uppercase">Student Mode</span>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold font-heading mt-2">Find Hostels & Universal Meal Pass</h1>
+                    <p class="text-xs sm:text-sm text-gray-300 mt-1">Zero Deposit • Hold Bed Feature • Free Sprouts & Eggs</p>
+                </div>
+            </div>
+
+            <!-- Search & Hostel Booking -->
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="md:col-span-1 bg-white p-5 rounded-2xl shadow border space-y-4">
+                    <h3 class="font-bold text-navy text-sm"><i class="fa-solid fa-filter text-cyan mr-1"></i> Search Filter</h3>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">Select Area</label>
+                        <select id="studentArea" onchange="filterStudentHostels()" class="w-full p-2.5 bg-gray-50 border rounded-xl text-xs font-medium">
+                            <option value="all">All Areas (Hyderabad)</option>
+                            <option value="Ameerpet">Ameerpet</option>
+                            <option value="KPHB">KPHB</option>
+                            <option value="Madhapur">Madhapur</option>
+                            <option value="Gachibowli">Gachibowli</option>
+                        </select>
+                    </div>
+                    <div class="bg-yellow/20 p-3 rounded-xl border border-yellow/40 text-xs">
+                        <span class="font-bold text-navy"><i class="fa-solid fa-qrcode text-navy mr-1"></i> Your Meal Pass ID:</span>
+                        <p class="font-mono font-bold text-cyan-dark mt-1">SW-HYD-8842 (Active)</p>
+                    </div>
+                </div>
+
+                <div class="md:col-span-2 space-y-4">
+                    <h3 class="font-bold text-navy text-base">Available Hostels for Booking</h3>
+                    <div id="studentHostelList" class="grid sm:grid-cols-2 gap-4">
+                        <!-- Dynamically populated or static cards -->
+                        <div class="bg-white p-4 rounded-2xl border shadow-sm space-y-3">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-bold text-navy">Sri Sai Luxury Mens PG</h4>
+                                    <p class="text-xs text-gray-500"><i class="fa-solid fa-location-dot text-cyan mr-1"></i> Ameerpet</p>
+                                </div>
+                                <span class="bg-yellow text-navy text-[10px] font-bold px-2 py-0.5 rounded">ZERO DEPOSIT</span>
+                            </div>
+                            <div class="text-xs text-gray-600 flex justify-between">
+                                <span>Sharing: 2, 3 Sharing</span>
+                                <span class="font-bold text-navy">₹6,000 /mo</span>
+                            </div>
+                            <button onclick="alert('Booking Confirmed! Zero deposit stay initiated for Sri Sai PG.')" class="w-full py-2 bg-navy text-white text-xs font-bold rounded-xl">Book No-Deposit Stay</button>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-2xl border shadow-sm space-y-3">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-bold text-navy">GPR Women's Hostel</h4>
+                                    <p class="text-xs text-gray-500"><i class="fa-solid fa-location-dot text-cyan mr-1"></i> KPHB Phase 3</p>
+                                </div>
+                                <span class="bg-yellow text-navy text-[10px] font-bold px-2 py-0.5 rounded">ZERO DEPOSIT</span>
+                            </div>
+                            <div class="text-xs text-gray-600 flex justify-between">
+                                <span>Sharing: 3 Sharing</span>
+                                <span class="font-bold text-navy">₹5,500 /mo</span>
+                            </div>
+                            <button onclick="alert('Booking Confirmed! Zero deposit stay initiated for GPR Hostel.')" class="w-full py-2 bg-navy text-white text-xs font-bold rounded-xl">Book No-Deposit Stay</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. ADMIN DASHBOARD -->
+        <div id="roleAdmin" class="hidden space-y-6">
+            <div class="bg-navy-dark text-white p-6 rounded-3xl shadow-lg">
+                <span class="bg-yellow text-navy text-xs font-bold px-3 py-1 rounded-full uppercase">Admin Portal</span>
+                <h1 class="text-2xl sm:text-3xl font-extrabold font-heading mt-2">Manage & Add Hostels</h1>
+                <p class="text-xs sm:text-sm text-gray-300 mt-1">Add new partner hostels, monitor bed occupancy, and manage disbursements.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Add Hostel Form -->
+                <div class="bg-white p-6 rounded-2xl shadow border space-y-4">
+                    <h3 class="font-bold text-navy text-base"><i class="fa-solid fa-circle-plus text-cyan mr-1"></i> Add New Hostel / PG</h3>
+                    <form id="addHostelForm" onsubmit="handleAddNewHostel(event)" class="space-y-3 text-xs">
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1">Hostel Name</label>
+                            <input type="text" id="newHostelName" required placeholder="e.g. Priyatham Shelters" class="w-full p-2.5 bg-gray-50 border rounded-xl">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1">Area in Hyderabad</label>
+                            <select id="newHostelArea" class="w-full p-2.5 bg-gray-50 border rounded-xl">
+                                <option value="Ameerpet">Ameerpet</option>
+                                <option value="KPHB">KPHB</option>
+                                <option value="Madhapur">Madhapur</option>
+                                <option value="Gachibowli">Gachibowli</option>
+                                <option value="Dilsukhnagar">Dilsukhnagar</option>
+                            </select>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block font-bold text-gray-700 mb-1">Monthly Rent (₹)</label>
+                                <input type="number" id="newHostelRent" required placeholder="6500" class="w-full p-2.5 bg-gray-50 border rounded-xl">
+                            </div>
+                            <div>
+                                <label class="block font-bold text-gray-700 mb-1">Total Beds</label>
+                                <input type="number" id="newHostelBeds" required placeholder="50" class="w-full p-2.5 bg-gray-50 border rounded-xl">
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full py-3 bg-cyan text-navy font-bold rounded-xl shadow mt-2">Add Hostel to Network</button>
+                    </form>
+                </div>
+
+                <!-- Live Network Status -->
+                <div class="bg-white p-6 rounded-2xl shadow border space-y-4">
+                    <h3 class="font-bold text-navy text-base"><i class="fa-solid fa-building-shield text-navy mr-1"></i> Network Hostels List</h3>
+                    <div id="adminHostelsContainer" class="space-y-2 max-h-72 overflow-y-auto">
+                        <div class="p-3 bg-gray-50 rounded-xl border flex justify-between items-center text-xs">
+                            <div>
+                                <p class="font-bold text-navy">Sri Sai Luxury Mens PG</p>
+                                <p class="text-[10px] text-gray-500">Ameerpet • ₹6,000/mo</p>
+                            </div>
+                            <span class="bg-emerald-100 text-emerald-700 font-bold px-2 py-0.5 rounded text-[10px]">Active</span>
+                        </div>
+                        <div class="p-3 bg-gray-50 rounded-xl border flex justify-between items-center text-xs">
+                            <div>
+                                <p class="font-bold text-navy">GPR Women's Hostel</p>
+                                <p class="text-[10px] text-gray-500">KPHB • ₹5,500/mo</p>
+                            </div>
+                            <span class="bg-emerald-100 text-emerald-700 font-bold px-2 py-0.5 rounded text-[10px]">Active</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. CAPTAIN MEAL SCANNER PORTAL -->
+        <div id="roleCaptain" class="hidden space-y-6">
+            <div class="bg-emerald-800 text-white p-6 rounded-3xl shadow-lg">
+                <span class="bg-yellow text-navy text-xs font-bold px-3 py-1 rounded-full uppercase">Captain Meal Pass Scanner</span>
+                <h1 class="text-2xl sm:text-3xl font-extrabold font-heading mt-2">Verify & Allow Student Meal / Stay</h1>
+                <p class="text-xs sm:text-sm text-emerald-200 mt-1">Scan student QR code or enter pass ID for Breakfast, Lunch, or Dinner access.</p>
+            </div>
+
+            <div class="max-w-md mx-auto bg-white p-6 rounded-2xl shadow border space-y-4">
+                <div class="text-center space-y-2">
+                    <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-2xl">
+                        <i class="fa-solid fa-qrcode"></i>
+                    </div>
+                    <h3 class="font-bold text-navy text-base">Meal Pass Verification</h3>
+                    <p class="text-xs text-gray-500">Select meal type and enter student ID to verify access.</p>
+                </div>
+
+                <div class="space-y-3 text-xs">
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1">Select Meal Time</label>
+                        <select id="scanMealType" class="w-full p-2.5 bg-gray-50 border rounded-xl font-medium">
+                            <option value="Breakfast">Breakfast (7:30 AM - 10:00 AM)</option>
+                            <option value="Lunch">Lunch (12:30 PM - 2:30 PM)</option>
+                            <option value="Dinner">Dinner (7:30 PM - 10:00 PM)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1">Student Pass ID or QR Code</label>
+                        <input type="text" id="scanStudentId" placeholder="e.g. SW-HYD-8842" class="w-full p-2.5 bg-gray-50 border rounded-xl font-mono">
+                    </div>
+
+                    <button onclick="verifyStudentMeal()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-md">
+                        <i class="fa-solid fa-check-circle mr-1"></i> Verify & Allow Student
+                    </button>
+
+                    <div id="scanResultBox" class="hidden p-3 rounded-xl border text-center font-bold text-xs mt-3"></div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER INFO -->
+    <footer class="bg-white border-t mt-auto py-4 text-center text-xs text-gray-500">
+        Shelterwala Mobile PWA • Built for Android APK Wrapper & Web
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        function switchRole(role) {
+            document.getElementById('roleStudent').classList.add('hidden');
+            document.getElementById('roleAdmin').classList.add('hidden');
+            document.getElementById('roleCaptain').classList.add('hidden');
+
+            document.getElementById('btnStudent').className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-navy-light text-white border border-white/20 transition-all";
+            document.getElementById('btnAdmin').className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-navy-light text-white border border-white/20 transition-all";
+            document.getElementById('btnCaptain').className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-navy-light text-white border border-white/20 transition-all";
+
+            if(role === 'student') {
+                document.getElementById('roleStudent').classList.remove('hidden');
+                document.getElementById('btnStudent').className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-cyan text-navy transition-all";
+            } else if(role === 'admin') {
+                document.getElementById('roleAdmin').classList.remove('hidden');
+                document.getElementById('btnAdmin').className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-cyan text-navy transition-all";
+            } else if(role === 'captain') {
+                document.getElementById('roleCaptain').classList.remove('hidden');
+                document.getElementById('btnCaptain').className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-cyan text-navy transition-all";
+            }
+        }
+
+        let customHostels = [
+            { name: "Sri Sai Luxury Mens PG", area: "Ameerpet", rent: 6000, beds: 40 },
+            { name: "GPR Women's Hostel", area: "KPHB", rent: 5500, beds: 35 }
+        ];
+
+        function handleAddNewHostel(e) {
+            e.preventDefault();
+            const name = document.getElementById('newHostelName').value;
+            const area = document.getElementById('newHostelArea').value;
+            const rent = document.getElementById('newHostelRent').value;
+            const beds = document.getElementById('newHostelBeds').value;
+
+            customHostels.push({ name, area, rent, beds });
+            
+            // Update admin list
+            renderAdminHostels();
+            renderStudentHostels();
+
+            alert('Success! Hostel "' + name + '" added to Shelterwala network.');
+            document.getElementById('addHostelForm').reset();
+        }
+
+        function renderAdminHostels() {
+            const container = document.getElementById('adminHostelsContainer');
+            container.innerHTML = customHostels.map(h => `
+                <div class="p-3 bg-gray-50 rounded-xl border flex justify-between items-center text-xs">
+                    <div>
+                        <p class="font-bold text-navy">\${h.name}</p>
+                        <p class="text-[10px] text-gray-500">\${h.area} • ₹\${h.rent}/mo • \${h.beds} Beds</p>
+                    </div>
+                    <span class="bg-emerald-100 text-emerald-700 font-bold px-2 py-0.5 rounded text-[10px]">Active</span>
+                </div>
+            `).join('');
+        }
+
+        function renderStudentHostels() {
+            const areaFilter = document.getElementById('studentArea').value;
+            const listContainer = document.getElementById('studentHostelList');
+            
+            const filtered = areaFilter === 'all' ? customHostels : customHostels.filter(h => h.area === areaFilter);
+
+            if(filtered.length === 0) {
+                listContainer.innerHTML = '<p class="text-xs text-gray-500 col-span-2 text-center py-4">No hostels available in this area currently.</p>';
+                return;
+            }
+
+            listContainer.innerHTML = filtered.map(h => `
+                <div class="bg-white p-4 rounded-2xl border shadow-sm space-y-3">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="font-bold text-navy">\${h.name}</h4>
+                            <p class="text-xs text-gray-500"><i class="fa-solid fa-location-dot text-cyan mr-1"></i> \${h.area}</p>
+                        </div>
+                        <span class="bg-yellow text-navy text-[10px] font-bold px-2 py-0.5 rounded">ZERO DEPOSIT</span>
+                    </div>
+                    <div class="text-xs text-gray-600 flex justify-between">
+                        <span>Available Beds: \${h.beds}</span>
+                        <span class="font-bold text-navy">₹\${h.rent} <span class="text-[10px] font-normal text-gray-500">/mo</span></span>
+                    </div>
+                    <button onclick="alert('Booking Confirmed for \${h.name}!')" class="w-full py-2 bg-navy text-white text-xs font-bold rounded-xl">Book No-Deposit Stay</button>
+                </div>
+            `).join('');
+        }
+
+        function filterStudentHostels() {
+            renderStudentHostels();
+        }
+
+        function verifyStudentMeal() {
+            const mealType = document.getElementById('scanMealType').value;
+            const studentId = document.getElementById('scanStudentId').value.trim();
+            const resultBox = document.getElementById('scanResultBox');
+
+            resultBox.classList.remove('hidden');
+
+            if(!studentId) {
+                resultBox.className = "p-3 rounded-xl border text-center font-bold text-xs mt-3 bg-red-100 text-red-700 border-red-300";
+                resultBox.innerHTML = "<i class='fa-solid fa-triangle-exclamation mr-1'></i> Please enter a valid Student ID or scan QR code!";
+                return;
+            }
+
+            // Simulate verification success
+            resultBox.className = "p-3 rounded-xl border text-center font-bold text-xs mt-3 bg-emerald-100 text-emerald-800 border-emerald-300";
+            resultBox.innerHTML = `<i class='fa-solid fa-circle-check mr-1 text-emerald-600'></i> Access Granted! Rahul Varma (\${studentId}) allowed for \${mealType}. Free Sprouts & Eggs included.`;
+        }
+    </script>
+</body>
+</html>
